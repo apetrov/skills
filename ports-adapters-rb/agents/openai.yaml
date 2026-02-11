@@ -1,0 +1,4 @@
+interface:
+  display_name: "Rails Ports & Adapters"
+  short_description: "Ports, adapters, services, and listeners"
+  default_prompt: "Use $ports-adapters-rb to navigate ports, services, adapters, and controller listeners."
