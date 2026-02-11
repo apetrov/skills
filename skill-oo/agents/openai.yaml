@@ -1,0 +1,4 @@
+interface:
+  display_name: "OO Code Writing"
+  short_description: "Model domains and define OO roles"
+  default_prompt: "Use $skill-oo to model domains, define responsibilities, and design collaborations for new OO code in Python or Ruby."
