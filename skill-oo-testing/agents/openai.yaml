@@ -1,0 +1,4 @@
+interface:
+  display_name: "Sandi Metz Grid Testing"
+  short_description: "Apply the 2x3 grid to keep only public-interface tests."
+  default_prompt: "Enforce the Sandi Metz grid: keep incoming queries/commands and outgoing command expectations; delete tests that touch private methods, outgoing queries, or indirect side-effects."
