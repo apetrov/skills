@@ -8,12 +8,19 @@ description: Guidance for writing object-oriented code from scratch in Python or
 ## Overview
 Write new code as small, intention-revealing objects that collaborate through stable messages. Favor clear responsibilities, explicit roles, and simple object graphs over flags and control-heavy logic.
 
+## Core principles (lecture framing)
+- Anthropomorphic: talk about objects as if they are people with jobs; design their responsibilities around intent.
+- Polymorphic: let multiple role players respond to the same message to handle variation.
+- Loosely-coupled: hide concrete collaborators behind stable messages; keep dependencies narrow.
+- Role-playing, factory-created, message-sending objects: build role objects in one place (factory) and let them collaborate by sending messages rather than inspecting each other.
+
 ## Quick start
 - State the domain goal in one sentence.
 - Identify the main collaborators and their responsibilities.
 - Name each role with a noun that reflects intent (Invoice, Plan, Policy).
 - Define the minimal message each role must answer.
 - Keep orchestration thin: prefer message sending over branching.
+- Create role objects via a factory when selection varies, then send messages to those roles.
 - Add tests at the role level before wiring integrations.
 
 ## When to avoid or delay
@@ -36,7 +43,8 @@ Write new code as small, intention-revealing objects that collaborate through st
    - Favor query/command separation where practical.
 5. Handle variation.
    - If behavior changes by type, use polymorphic role players.
-   - If selection varies by input, centralize it in a factory.
+   - If selection varies by input, centralize it in a factory that returns roles.
+   - Keep role objects message-focused; avoid type checks in callers.
 6. Test the roles.
    - Unit-test each role with focused inputs.
    - Keep integration tests thin and behavior-oriented.
@@ -47,6 +55,7 @@ Write new code as small, intention-revealing objects that collaborate through st
 - Keep objects small; split once a class owns multiple reasons to change.
 - Make dependencies explicit via constructor injection.
 - Avoid flag arguments; prefer different role objects.
+- Describe objects in anthropomorphic terms to clarify intent and messages.
 
 ## Language notes
 ### Python
