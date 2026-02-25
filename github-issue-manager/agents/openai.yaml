@@ -1,0 +1,4 @@
+interface:
+  display_name: "GitHub Issue Manager"
+  short_description: "Lookup, plan, and edit GitHub issues safely"
+  default_prompt: "Use $github-issue-manager to inspect or propose updates for a GitHub issue."
