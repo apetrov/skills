@@ -193,6 +193,29 @@ PY
 - The script prints shape and a preview by default.
 - Use `--head N` to control preview rows.
 - Use `--output` to persist full results for later steps.
+- For follow-up analysis, you can use Python via `uvx` or query the saved file with DuckDB.
+
+Analyze a saved parquet file with Python:
+
+```bash
+uvx --with pandas --with pyarrow python -c "
+import pandas as pd
+df = pd.read_parquet('/tmp/revenue_by_bundle_30d.parquet')
+print(df.groupby('bundle', dropna=False)[['revenue', 'gross_spend']].sum().sort_values('revenue', ascending=False).head(20))
+"
+```
+
+Analyze a saved parquet file with DuckDB:
+
+```bash
+duckdb -c "
+SELECT bundle, sum(revenue) AS revenue, sum(gross_spend) AS gross_spend
+FROM read_parquet('/tmp/revenue_by_bundle_30d.parquet')
+GROUP BY 1
+ORDER BY revenue DESC
+LIMIT 20;
+"
+```
 
 ## Resources
 
