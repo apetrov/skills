@@ -1,0 +1,10 @@
+{
+  "source": "appgrowth/domain/bi2.py",
+  "generated_at": "manual-refresh-required",
+  "notes": "Refresh this file using the instructions in SKILL.md -> Refresh Catalog From appgrowth-py.",
+  "dimensions_count": 0,
+  "measures_count": 0,
+  "default_measures_ids": [],
+  "dimensions": [],
+  "measures": []
+}

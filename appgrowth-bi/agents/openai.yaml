@@ -1,0 +1,4 @@
+interface:
+  display_name: "Appgrowth BI"
+  short_description: "Query Appgrowth BI and return tabular results"
+  default_prompt: "Get BI data from Appgrowth using BI_API_KEY and summarize insights."
