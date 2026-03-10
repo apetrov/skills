@@ -6,62 +6,42 @@ description: Guidance for writing object-oriented code from scratch in Python or
 # Object-Oriented Code Writing
 
 ## Overview
-Write new code as small, intention-revealing objects that collaborate through stable messages. Favor clear responsibilities, explicit roles, and simple object graphs over flags and control-heavy logic.
+Write new code as small, intention-revealing objects that collaborate through stable messages. Favor clear responsibilities, explicit roles, and simple object graphs over flags, conditionals, and control-heavy logic.
 
-## Core principles (lecture framing)
-- Anthropomorphic: talk about objects as if they are people with jobs; design their responsibilities around intent.
-- Polymorphic: let multiple role players respond to the same message to handle variation.
-- Loosely-coupled: hide concrete collaborators behind stable messages; keep dependencies narrow.
-- Role-playing, factory-created, message-sending objects: build role objects in one place (factory) and let them collaborate by sending messages rather than inspecting each other.
+## What objects should be
+- Anthropomorphic: treat each object as having a job; describe it in terms of what it is responsible for doing.
+- Polymorphic: let different objects answer the same message when behavior varies; avoid branching on type in callers.
+- Role-playing: model collaborators as roles in a conversation, each with a narrow responsibility in the domain.
+- Loosely-coupled: depend on stable messages, not concrete classes or internal state.
+- Factory-created: centralize object selection and assembly when construction varies, so callers stay focused on behavior.
+- Message-sending: prefer asking objects to do work over pulling data out and making decisions elsewhere.
+- Anti-conditional: avoid conditionals that select behavior in callers; prefer role objects or polymorphic message receivers when behavior varies.
 
-## Quick start
-- State the domain goal in one sentence.
-- Identify the main collaborators and their responsibilities.
-- Name each role with a noun that reflects intent (Invoice, Plan, Policy).
-- Define the minimal message each role must answer.
-- Keep orchestration thin: prefer message sending over branching.
-- Create role objects via a factory when selection varies, then send messages to those roles.
-- Add tests at the role level before wiring integrations.
+## Non-negotiable rules
+- Start concrete; do not abstract early.
+- Prefer composition over inheritance.
+- Avoid conditionals that choose behavior in callers.
+- Do not expose data for other objects to interpret.
+- Give each object one clear responsibility.
+- Depend on messages, not concrete classes.
+- Keep constructors simple; do not put domain work in them.
+- Prefer domain names for classes and verb phrases for messages.
+- Introduce factories only when object selection or assembly already varies.
+- Keep code easy to test through the public interface.
 
-## When to avoid or delay
-- Keep a simple procedure when the work is tiny and unlikely to change.
-- Avoid abstract base classes or frameworks until you see repetition.
-- Do not introduce factories unless construction logic is already branching.
+## Nil / Null values
+- Never return `None` / `nil` as a domain value.
+- If an object may be missing, return a null object that conforms to the same public interface.
+- Make the null object explicit and intention-revealing in the domain language.
+- Callers should send the same messages to the null object as to the real object, without extra branching.
 
-## Workflow
-1. Capture the domain story.
-   - Write a short narrative of the behavior in the user's language.
-   - Extract the nouns (roles) and verbs (messages).
-2. Assign responsibilities.
-   - Each class should do one kind of thing well.
-   - Move data+behavior together; avoid "god" objects.
-3. Design the collaboration.
-   - Sketch who sends which message to whom.
-   - Prefer composition to inheritance unless behavior truly varies.
-4. Define object APIs.
-   - Keep methods small and intention-revealing.
-   - Favor query/command separation where practical.
-5. Handle variation.
-   - If behavior changes by type, use polymorphic role players.
-   - If selection varies by input, centralize it in a factory that returns roles.
-   - Keep role objects message-focused; avoid type checks in callers.
-6. Test the roles.
-   - Unit-test each role with focused inputs.
-   - Keep integration tests thin and behavior-oriented.
-
-## Writing guidelines
-- Prefer nouns for classes, verbs for methods.
-- Use explicit domain terms, not technical placeholders.
-- Keep objects small; split once a class owns multiple reasons to change.
-- Make dependencies explicit via constructor injection.
-- Avoid flag arguments; prefer different role objects.
-- Describe objects in anthropomorphic terms to clarify intent and messages.
+## Exceptions
+- If you believe breaking the nil / null rule is necessary, stop and ask for permission before doing it.
 
 ## Language notes
 ### Python
 - Prefer plain classes with `__init__` and small methods; avoid premature ABCs.
 - Use `@dataclass` only when the class is truly data-heavy and behavior-light.
-- Keep module boundaries clear; treat modules as namespaces for related roles.
 - Favor explicit dependencies over globals; pass collaborators in constructors.
 - Test with pytest and focus on behavior, not implementation details.
 
@@ -72,13 +52,8 @@ Write new code as small, intention-revealing objects that collaborate through st
 - Prefer keyword arguments for clarity in constructors.
 - Test with RSpec or Minitest and keep specs intention-revealing.
 
-## Output expectations
-- Provide a proposed object model: roles, responsibilities, messages.
-- Offer a collaboration outline (who calls what, in what order).
-- Suggest test cases aligned to each role.
-- Provide a small starter scaffold when asked for code.
-
-## Example prompts
-- "How should I model a checkout flow with coupons?"
-- "Design OO classes for a notification system."
-- "What objects and messages fit this domain story?"
+## Required output
+- List the proposed objects and the single responsibility of each.
+- List the public messages each object should answer.
+- Describe the collaboration flow: who sends which message to whom.
+- Suggest tests for public behavior only: incoming queries, incoming commands, and outgoing commands.
