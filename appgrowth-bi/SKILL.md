@@ -56,9 +56,70 @@ uvx --with pandas --with pyarrow --with requests \
   - `concentrate_dims`, `concentrate_measure`, `concentrate_mass`
 - Prefer `start=30d`, `end=0d` for “last 30d” unless explicit dates are given.
 - Use `by` and `measures` as JSON lists.
+- Filter dimensions in `query` with SQL-style expressions when the field is available in BI filters, for example:
+  - `query="flavor IN ('flavor1', 'flavor2')"`
+- Filter post-aggregation/frame values in `having` with pandas-style expressions, for example:
+  - `having="role.astype('str').isin(('revenue_ops',))"`
+- Include fields referenced by `query` or `having` in `filter_data` so BI exposes them for filtering, for example:
+  - `filter_data=['flavor', 'role']`
+- `scripts/query_bi.py` sends these values as a JSON POST body to `https://app.appgrowth.com/bi2/`.
 - Use `--format csv` when parquet dependencies are unavailable.
 - Save to `--output` for reproducibility before doing derived analysis.
 - For the full request parameter table with defaults, accepted values, and examples, read `references/bi-api.md`.
+
+Example request payload combining flavor and role filters:
+
+```json
+{
+  "start": "2026-03-09",
+  "end": "2026-03-10",
+  "by": ["time_1d"],
+  "query": "flavor IN ('flavor1', 'flavor2')",
+  "having": "role.astype('str').isin(('revenue_ops',))",
+  "measures": [
+    "impressions",
+    "clicks",
+    "uniq_clicks",
+    "installs",
+    "billing_actions",
+    "optimization_events",
+    "gross_spend",
+    "revenue",
+    "profit",
+    "roas",
+    "margin",
+    "cr",
+    "uniq_cr",
+    "ipm",
+    "cpm",
+    "cpi",
+    "ecpm",
+    "ecpc",
+    "ecpi",
+    "raw_price",
+    "bid_floor",
+    "bid_cpi",
+    "bid_cpa",
+    "target_cpa",
+    "advertiser_revenue_roas",
+    "advertiser_revenue_roas_d0",
+    "advertiser_revenue_roas_d1",
+    "advertiser_revenue_roas_d3",
+    "advertiser_revenue_roas_d7",
+    "ad_revenue_arpu_d0"
+  ],
+  "filter_data": ["flavor", "role"],
+  "date_column": "bid_timestamp"
+}
+```
+
+Equivalent CLI call:
+
+```bash
+uvx --with pandas --with pyarrow --with requests \
+  python scripts/query_bi.py \
+  --params-json "{\"start\":\"2026-03-09\",\"end\":\"2026-03-10\",\"by\":[\"time_1d\"],\"query\":\"flavor IN ('flavor1', 'flavor2')\",\"having\":\"role.astype('str').isin(('revenue_ops',))\",\"measures\":[\"impressions\",\"clicks\",\"uniq_clicks\",\"installs\",\"billing_actions\",\"optimization_events\",\"gross_spend\",\"revenue\",\"profit\",\"roas\",\"margin\",\"cr\",\"uniq_cr\",\"ipm\",\"cpm\",\"cpi\",\"ecpm\",\"ecpc\",\"ecpi\",\"raw_price\",\"bid_floor\",\"bid_cpi\",\"bid_cpa\",\"target_cpa\",\"advertiser_revenue_roas\",\"advertiser_revenue_roas_d0\",\"advertiser_revenue_roas_d1\",\"advertiser_revenue_roas_d3\",\"advertiser_revenue_roas_d7\",\"ad_revenue_arpu_d0\"],\"filter_data\":[\"flavor\",\"role\"],\"date_column\":\"bid_timestamp\"}"
+```
 
 ## Available Metrics And Dimensions
 
