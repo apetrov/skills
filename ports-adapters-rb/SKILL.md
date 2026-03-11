@@ -16,8 +16,16 @@ Open `references/architecture-map.md` for the generic file map of ports, domain 
 ## Listener Pattern
 
 - Treat services as orchestrators that call listener callbacks for success/failure.
+- Domain services must not raise exceptions; they report outcomes only through listener success/failure callbacks.
 - Pass the controller (or a dedicated presenter) as the listener; implement the expected callback methods on the controller.
+- The listener/controller must always turn both success and failure callbacks into a valid application response; do not rely on uncaught exceptions that become HTTP 500s.
 - Use listener classes in ports as interface references only; controllers do not inherit from them.
+
+## Error Boundaries
+
+- Adapters may raise only domain-defined errors from the relevant port contract, for example `UserPortError`.
+- Do not leak adapter-specific exceptions (AR errors, HTTP client errors, SDK errors) across the port boundary; translate them into domain exceptions first.
+- Services handle adapter/domain failures by triggering the listener failure path instead of re-raising.
 
 ## Defining Ports (Cluster by Responsibility)
 
@@ -66,9 +74,9 @@ Concrete examples to follow:
 ## Add a New Use Case
 
 - Define or extend a driven port in `app/ports` (include error and any listener interfaces).
-- Implement the driven adapter in `app/adapters` (wrap AR/HTTP/queues/etc.).
-- Add a service in `app/services` that accepts `repo`/`listener` and calls listener callbacks.
-- Implement the listener callbacks in the controller or presenter.
+- Implement the driven adapter in `app/adapters` (wrap AR/HTTP/queues/etc. and translate infrastructure failures into domain port errors).
+- Add a service in `app/services` that accepts `repo`/`listener`, never raises, and calls listener callbacks for both success and failure.
+- Implement the listener callbacks in the controller or presenter so every path returns a valid response.
 - Wire the adapter in `app/lib/port_factory.rb` if needed.
 - Update tests to cover the service and adapter boundary.
 
