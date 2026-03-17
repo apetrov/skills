@@ -1,0 +1,4 @@
+interface:
+  display_name: "Rails Controller/View Structure"
+  short_description: "Thin controllers, object-driven views"
+  default_prompt: "Use $structure-controllers-views to review or refactor my Rails controller and view structure."
