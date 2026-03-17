@@ -13,12 +13,18 @@
 - `app/ports/payment_port.rb`
   - Error: `PaymentPortError`
   - Port module: `PaymentPort`
+- `app/ports/for_transfer.rb`
+  - Listener helper: `ForTransferListener`
+  - Error: `DomainError`
+  - Port module: `ForTransfer`
 
 ## Domain (pure objects / decisions)
 
 - `app/domain/build_order_payload.rb` (build outbound payload for a driven adapter)
 - `app/domain/rebuild_user_projection.rb` (recompute dependent state)
 - `app/domain/no_rebuild_needed.rb` (no-op strategy)
+- `app/domain/transfer.rb` (transfer lifecycle such as `complete`)
+- `app/domain/account.rb` (balance rules such as `debit` and `credit`)
 
 ## Services (use cases)
 
@@ -27,12 +33,14 @@
 - `app/services/cancel_order.rb` (update + notify)
 - `app/services/handle_payment_webhook.rb` (validate + update records)
 - `app/services/authenticate_user.rb` (session auth)
+- `app/services/transfer_money.rb` (move funds + persist transfer in one transaction)
 
 ## Adapters (driven port implementations)
 
 - `app/adapters/user_repo.rb` (UserPort implementation + persistence)
 - `app/adapters/order_repo.rb` (OrderPort implementation + persistence)
 - `app/adapters/payment_gateway.rb` (PaymentPort implementation + external API)
+- `app/adapters/active_record_for_transfer.rb` (`ForTransfer` implementation + AR transaction/persistence)
 
 ## Controllers (driving adapters + listeners)
 
@@ -44,6 +52,8 @@
   - Listener for: `HandlePaymentWebhook`
 - `app/controllers/sessions_controller.rb`
   - Listener for: `AuthenticateUser`
+- `app/controllers/transfers_controller.rb`
+  - Listener for: `TransferMoney`
   
 
 ## Listener Implementation Notes
@@ -51,6 +61,7 @@
 - Services accept a `listener` and call `listener.<action>_success`/`listener.<action>_failure` methods.
 - Controllers implement those methods directly; they do not inherit from a listener class.
 - Use the listener classes in ports as reference shapes for tests or fakes.
+- Example transfer callbacks: `transfer_success(transfer)` and `transfer_failed(message)`.
 
 ## Wiring
 
@@ -58,3 +69,4 @@
   - `UserRepo.new`
   - `OrderRepo.new`
   - `PaymentGateway.new(ApiClient.instance)`
+  - `ActiveRecordForTransfer.new`
