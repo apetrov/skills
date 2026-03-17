@@ -1,0 +1,4 @@
+interface:
+  display_name: "General Coding"
+  short_description: "Atomic changes with test-first flow"
+  default_prompt: "Use $general-coding to implement this task in small, testable, low-risk steps."
