@@ -86,9 +86,9 @@ end
 class Account < ActiveRecord::Base
 end
 
-# app/adapters/active_record_for_transfer.rb
+# app/adapters/for_transfer_repo.rb
 # Driven
-class ActiveRecordForTransfer
+class ForTransferRepo
   include ForTransfer
 
   def transaction(&block)
@@ -124,7 +124,7 @@ class TransfersController < ApplicationController
   include ForTransferListener
 
   def create
-    repo = ActiveRecordForTransfer.new
+    repo = ForTransferRepo.new
 
     TransferMoney.new(repo, self).call(
       params.require(:source_account_id),
