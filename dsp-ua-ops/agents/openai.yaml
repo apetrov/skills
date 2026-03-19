@@ -1,0 +1,4 @@
+interface:
+  display_name: "DSP UA Ops"
+  short_description: "Diagnose DSP UA volume, cost, and ROAS issues"
+  default_prompt: "Use $dsp-ua-ops to investigate DSP volume, cost, and platform vs advertiser ROAS issues."

@@ -15,6 +15,11 @@ Keep changes small, testable, and easy to review. Figure out how to test the tas
 - Make sure changes are atomic.
 - Avoid changes longer than 250 LOC. Break the task into subtasks first when needed.
 - Before working on the task, figure out how you are going to test it.
+- Do not guess at performance bottlenecks. Only optimize after proving where time is spent.
+- Measure before tuning for speed, and only optimize when one part clearly dominates.
+- Prefer simple algorithms until measurement shows input size or workload justifies something fancier.
+- Prefer simple algorithms and simple data structures because they are usually less buggy and easier to implement.
+- Let data shape the design. Choose and organize data structures well so the code stays obvious.
 - Before implementing, make sure the code is in good form to build on. Refactor first if that helps implement the task.
 - Prefer local verification such as a CLI scaffold, unit tests, or functional tests.
 - Test locally. Do not expect the user to test it for you.
@@ -25,11 +30,12 @@ Keep changes small, testable, and easy to review. Figure out how to test the tas
 ## Workflow
 
 1. Figure out the test strategy before editing code.
-2. Split the task into smaller steps if the full change would be large.
-3. Refactor the current code first if that gives you a better place to implement the task.
-4. Make the smallest complete change.
-5. Run the relevant local test, scaffold, or functional flow.
-6. Review the finished code and simplify it.
+2. Check whether the task has a performance angle; if so, decide how to measure it before changing code.
+3. Split the task into smaller steps if the full change would be large.
+4. Refactor the current code first if that gives you a better place to implement the task.
+5. Make the smallest complete change.
+6. Run the relevant local test, scaffold, or functional flow.
+7. Review the finished code and simplify it, including replacing unnecessary cleverness with simpler data structures or logic.
 
 ## Expected Output
 
@@ -38,4 +44,5 @@ Keep changes small, testable, and easy to review. Figure out how to test the tas
 - State any assumptions that need user confirmation.
 - Implement the smallest complete step.
 - Report what you ran locally.
+- Report any measurement approach used for performance-sensitive work.
 - Report any simplifications made after the code was working.

@@ -58,7 +58,7 @@ response = requests.post(
 | `pivot` | `list[string]` | `[]` | Columns used in `pandas.pivot_table`. | Dimension ids from `references/bi-catalog.json`. | `["country"]` |
 | `metric` | `string` | `""` | Value column used in `pandas.pivot_table`. | Measure ids from `references/bi-catalog.json`. | `"revenue"` |
 | `query` | `string` | `""` | Raw SQL query for ClickHouse. Conditions with `OR` must be enclosed in parentheses. | Valid ClickHouse boolean expression. | `payload__tag='123456789_iOS' AND (role='ag_playbook' OR role='exp')` |
-| `having` | `string` | `""` | Pandas query applied to the result dataframe via `df.query(having, engine="python")`. | Valid pandas query expression. | `impressions > 0`, `(impressions > 0) & (clicks > 0)` |
+| `having` | `string` | `""` | Pandas query applied to the result dataframe via `df.query(having, engine="python")`; this is local post-processing, not a backend BI filter. | Valid pandas query expression. | `impressions > 0`, `(impressions > 0) & (clicks > 0)` |
 | `events` | `list[string]` | `[]` | List of ad events. | Event ids supported by BI. | `["video_click", "image_click"]` |
 | `event_metrics` | `list[string]` | `[]` | List of ad event metrics. | Event metric ids supported by BI. | `["postbanner_ctr", "video_ctr"]` |
 | `measures` | `list[string]` | BI defaults | Measures returned by the query. | Measure ids from `references/bi-catalog.json`; defaults come from `default_measures_ids`. | `["impressions", "clicks", "gross_spend", "cpi", "advertiser_revenue_roas_d0"]` |
