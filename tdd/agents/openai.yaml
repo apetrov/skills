@@ -1,0 +1,4 @@
+interface:
+  display_name: "TDD"
+  short_description: "Use red-green-refactor with strict public-interface OO tests."
+  default_prompt: "Use TDD with one behavior at a time. Enforce the Sandi Metz grid: keep incoming queries, incoming commands, and outgoing command expectations only; avoid private-method tests, outgoing queries, indirect side-effects, and a default bias toward integration tests."
