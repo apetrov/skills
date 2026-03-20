@@ -27,6 +27,16 @@ Keep changes small, testable, and easy to review. Figure out how to test the tas
 - Favor OOP in the Alan Kay sense.
 - When the code is working, thoroughly review the change and look for ways to reduce complexity.
 
+## Naming
+
+- Name classes by responsibility or stable domain role, not storage shape, framework detail, or vague status words.
+- Name methods by the message they answer in the domain; prefer intention-revealing names over implementation-shaped names.
+- Name variables after the concrete domain thing they represent; if a name needs comments to explain an encoding, redesign the data shape.
+- Name roles from the caller's point of view: either the message the collaborator must answer or the purpose it serves in the conversation.
+- Prefer specific role names like `Preparer`, `Wheel`, `Parts`, or purpose names like `ForPaying`; be suspicious of `Manager`, `Helper`, `Processor`, `Service`, `Handler`, `data`, `info`, and `value`.
+- For boundary interfaces such as ports, name them by purpose using a `ForX` pattern when it fits; let adapters append the technology detail later.
+- During review and refactoring, treat naming as design work: if a name is generic, it is probably hiding an unclear responsibility.
+
 ## Workflow
 
 1. Figure out the test strategy before editing code.
