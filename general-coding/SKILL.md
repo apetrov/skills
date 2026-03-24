@@ -25,6 +25,8 @@ Keep changes small, testable, and easy to review. Figure out how to test the tas
 - Test locally. Do not expect the user to test it for you.
 - Ask the user about assumptions unless you are absolutely sure.
 - Favor OOP in the Alan Kay sense.
+- Avoid type annotations unless they are clearly necessary for a boundary, tool, or correctness constraint.
+- Prefer duck typing and message-oriented design over prematurely pinning collaborators to explicit types.
 - When the code is working, thoroughly review the change and look for ways to reduce complexity.
 
 ## Naming
