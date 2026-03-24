@@ -1,0 +1,4 @@
+interface:
+  display_name: "Preliminary Data Analysis"
+  short_description: "Run fast exploratory analysis on datasets"
+  default_prompt: "Use $preliminary-data-analysis to inspect this dataset, preserve source extracts in /tmp, and summarize the main findings."
