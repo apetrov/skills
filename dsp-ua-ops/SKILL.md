@@ -1,12 +1,12 @@
 ---
 name: dsp-ua-ops
-description: Diagnose DSP user acquisition problems in volume, cost, platform ROAS, and advertiser ROAS. Use when acting as a DSP User Acquisition Manager, especially for Appgrowth BI investigations, default `role='revenue_ops'` and `flavor IN ('tricky', 'tricky_light')` scope, cohort-tag export from `http://localhost:4000/AGENT.md`, or Cohortful follow-up analysis.
+description: Diagnose DSP user acquisition problems in volume, cost, platform ROAS, and advertiser ROAS. Use when acting as a DSP User Acquisition Manager, especially for Appgrowth BI investigations, default `role='revenue_ops'` and `flavor IN ('tricky', 'tricky_light')` scope, cohort-tag export from `http://localhost:4000/AGENT.md`, or Cohortful follow-up analysis. When exported data needs local first-pass analysis, use `$preliminary-data-analysis`.
 ---
 
 # DSP UA Ops
 
 Use this skill to investigate DSP performance regressions and explain what broke, where it broke, and what to check next.
-Start with aggregated BI cuts, then escalate to cohort-tag export or Cohortful only when the BI split is not enough.
+Start with aggregated BI cuts, then escalate to cohort-tag export or Cohortful only when the BI split is not enough. When working on exported datasets locally, use `$preliminary-data-analysis` for the storage and analysis workflow.
 
 ## Default Scope
 
@@ -43,7 +43,7 @@ Start with `by=["time_1d"]` and measures covering the full funnel:
 Use `bundle`, `app`, `campaign_id`, `country`, and `time_1d` first. If one split explains most of the delta, stop broad slicing and quantify that driver.
 
 5. Escalate only when needed.
-If the issue is concentrated in a specific cohort tag, use the local cohorts endpoint from `http://localhost:4000/AGENT.md`. If you need heavier cohort or feature analysis on exported data, use Cohortful.
+If the issue is concentrated in a specific cohort tag, use the local cohorts endpoint from `http://localhost:4000/AGENT.md`. If you need local follow-up analysis on exported BI data, use `$preliminary-data-analysis` so the extract is preserved under `/tmp` and converted to parquet when practical. If you need heavier cohort or feature analysis on exported data, use Cohortful.
 
 6. Return a concise diagnosis.
 State the broken metric, impacted segment, change magnitude, likely driver, confidence level, and the next confirming query if uncertainty remains.
@@ -53,13 +53,13 @@ State the broken metric, impacted segment, change magnitude, likely driver, conf
 - Check volume first, then pricing, then monetization. Many ROAS drops are downstream of volume mix or rising CPI.
 - Separate platform ROAS from advertiser ROAS explicitly. Do not treat them as interchangeable.
 - Quantify contribution to the delta. Focus on the segment that explains the majority of change.
-- If you export data from BI, convert or save it to parquet before running follow-up analysis whenever possible.
+- If you export data from BI, hand the local follow-up work to `$preliminary-data-analysis` and follow its `/tmp` session-directory and parquet-first conventions.
 - Prefer saved BI outputs and DuckDB for follow-up calculations instead of repeating API calls.
 - Use user-level or cohort-tag exports only after narrowing the target segment; do not export broad raw data by default.
 
 ## Tools
 
 - Use `$appgrowth-bi` for all aggregated Appgrowth BI pulls.
-- Use `uvx` and `duckdb` for local analysis on exported CSV or parquet files.
+- Use `$preliminary-data-analysis` for local analysis on exported datasets, including `/tmp` workspace setup, local-copy preservation, parquet conversion, and `uvx` or `duckdb` analysis.
 - Use `glow` when pretty-printing markdown summaries in the terminal helps readability.
 - Read [references/investigation-recipes.md](references/investigation-recipes.md) for concrete query payloads and handoff commands.
