@@ -1,0 +1,4 @@
+interface:
+  display_name: "Pandas Style"
+  short_description: "Refactor pandas code into a safe style"
+  default_prompt: "Use $pandas-style to refactor this pandas code into the preferred dataframe style."
