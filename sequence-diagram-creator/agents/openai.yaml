@@ -1,0 +1,4 @@
+interface:
+  display_name: "Sequence Diagram Creator"
+  short_description: "Create code-derived Mermaid sequence diagrams"
+  default_prompt: "Use $sequence-diagram-creator to create a Mermaid sequence diagram from this codebase."
