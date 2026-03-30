@@ -1,0 +1,4 @@
+interface:
+  display_name: "Pinpoint Behavior Shift"
+  short_description: "Find what changed between two impression cohorts"
+  default_prompt: "Use $pinpoint-behavior-shift to compare two impression cohorts and identify what changed."
