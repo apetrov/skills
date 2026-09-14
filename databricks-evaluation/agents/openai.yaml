@@ -1,0 +1,4 @@
+interface:
+  display_name: "Databricks Evaluation"
+  short_description: "Check Databricks access and execution paths"
+  default_prompt: "Use $databricks-evaluation to verify Databricks access, choose an execution path, and run a minimal validation query or Spark job."
