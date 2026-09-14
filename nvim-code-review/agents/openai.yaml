@@ -1,0 +1,9 @@
+interface:
+  display_name: "Neovim Code Review"
+  short_description: "Review Git changes side by side in Neovim"
+  default_prompt: "Use $nvim-code-review to open the current Git changes in Neovim for review."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "nvim"
+      description: "nvim-mcp connection to a running Neovim instance"
