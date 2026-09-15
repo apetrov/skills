@@ -1,6 +1,6 @@
 ---
 name: nvim-code-review
-description: "Prepare Git changes for review in a running Neovim instance through nvim-mcp, using side-by-side diffs, ordinary buffers for new files, and REVIEW: notes."
+description: "Prepare a commit or the current branch's pull-request changes for review in a running Neovim instance through nvim-mcp, using side-by-side diffs, ordinary buffers for new files, and REVIEW: notes."
 ---
 
 # Neovim Code Review
@@ -17,10 +17,10 @@ Use the repository containing Neovim's working directory and respect any explici
 
 Use Git to find changed files within that scope. Open relevant source, tests, configuration, migrations, and documentation. Omit generated, binary, and visual assets unless requested or central to the change. Omit incidental metadata.
 
-When no base is specified:
+Choose the comparison mode from the user's request:
 
-- Compare scoped local changes with `HEAD` and include untracked files.
-- For a branch or PR, use the merge base with its unambiguous target or upstream; otherwise ask for the base.
+- **Review commit:** compare the working copy with `HEAD` and include untracked files. This is the default mode when the user does not request a pull-request review.
+- **Review pull request:** while on the PR's branch, compare the working copy with the merge base between `HEAD` and the PR's target branch. This includes committed branch changes, staged and unstaged changes, and untracked files in one review layout. Resolve the target from an explicit base first, then PR metadata when available, then an unambiguous repository default branch. Do not treat the current branch's same-name remote-tracking upstream as the PR target. If the target remains ambiguous, ask for it.
 
 Collect paths with Git's NUL-delimited output. Track both paths for copies and renames, and include deletions.
 
